@@ -4,10 +4,8 @@
  * and open the template in the editor.
  */
 package PPod;
-import Enums.Extensions;
+import Enums.*;
 import Exceptions.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -45,6 +43,11 @@ public class PPod implements PPodContract{
     private int index;
     
     /**
+     * Type of shuffle play
+     */
+    private TypesOfOrdenation type;
+    
+    /**
      * Creates a PPod
      * 
      */
@@ -60,11 +63,14 @@ public class PPod implements PPodContract{
         try{
             if(file==null)
                 throw new FileNullException();
-            if(this.capacity+file.getSize()>MAX_CAPACITY)
+            if(this.getCapacity()+file.getSize()>MAX_CAPACITY)
                 throw new MemoryFullException();
             if(this.Size()+1>this.files.length)
                 throw new MaxFilesException();
-        } catch(FileNullException | MemoryFullException | MaxFilesException e){
+            if(file.getLenght()<=0)
+                throw new TrackLenghtInvalidException();
+        } catch(FileNullException | MemoryFullException | MaxFilesException | TrackLenghtInvalidException e){
+            this.capacity+=file.getSize();
             IsAdded=false;
         }
         if(IsAdded){
@@ -79,18 +85,18 @@ public class PPod implements PPodContract{
     public boolean deleteFile(int index) {
         boolean IsDeleted=true;
         try{            
-            if(index<0 || index >=this.Size())
+            if(index-1<0 || index>this.Size())
                 throw new InvalidIndexException();
             
         } catch(InvalidIndexException e){
             IsDeleted=false;
         }
         if(IsDeleted){
-            this.capacity-=this.files[index].getSize();
-            for(int i=index;i<this.Size()-1;i++){
+            this.capacity-=this.files[index-1].getSize();
+            for(int i=index-1;i<this.Size()-1;i++){
                 this.files[i]=this.files[i+1];
             }
-            this.files[this.Size()]=null;
+            this.files[this.Size()-1]=null;
             System.out.println("File deleted."+'\n');
         }
         return IsDeleted;
@@ -102,15 +108,18 @@ public class PPod implements PPodContract{
         try{
             if(index-1<0 || index-1>=this.Size())
                 throw new InvalidIndexException();
-            if(this.files[index-1].getExtension()!=Extensions.mp3)
+            if(this.files[index-1].getExtension()!=extension)
                 throw new ExtensionException();
-        } catch(InvalidIndexException | ExtensionException e){
+            if(this.files[index-1].getLenght()<=0)
+                throw new TrackLenghtInvalidException();
+        } catch(InvalidIndexException | ExtensionException | TrackLenghtInvalidException e){
             IsPlaying=false;
         }
         if(IsPlaying){
             this.index=index-1;
             System.out.println("Name: "+this.files[index-1].getName());
-            System.out.println("Lenght: "+this.files[index-1].getLenght()+'\n');
+            System.out.println("Size: "+this.files[index-1].getSize()+"Kb");
+            System.out.println("Lenght: "+this.files[index-1].getLenght()+"s"+'\n');
         }
     }
 
@@ -119,12 +128,18 @@ public class PPod implements PPodContract{
         boolean IsPlaying=true;
         do{
             try{
-                if(this.files[this.index++]==null)
-                    throw new NextTrackInvalidException();
+                if(this.index!=this.Size()-1){
+                    if(this.files[this.index++]==null)
+                        throw new NextTrackInvalidException();
+                }
+                else{
+                    this.index=0;
+                }
             } catch(NextTrackInvalidException e){
                 IsPlaying=false;
             }
         }while(!IsPlaying);
+
         if(IsPlaying){
             this.playTrack(index+1);
         }
@@ -135,18 +150,74 @@ public class PPod implements PPodContract{
         boolean IsPlaying=true;
         do{
             try{
-                if(this.files[this.index--]==null)
-                    throw new NextTrackInvalidException();
+                if(this.index!=0){
+                    if(this.files[this.index--]==null)
+                        throw new NextTrackInvalidException();
+                }
+                else{
+                    this.index=this.Size();
+                }
             } catch(NextTrackInvalidException e){
                 IsPlaying=false;
             }
         }while(!IsPlaying);
+
         if(IsPlaying){
-           this.playTrack(index+1);
+            this.playTrack(index);
         }
     }
     
     
+    @Override
+    public void shufflePlay(TypesOfOrdenation type){
+        this.type=type;
+        switch(this.type){
+            case NAME: this.shuffleByName();
+            case SIZE: this.shuffleBySize();
+        }
+    }
+    
+    /**
+     * Shuffle the tracks by name
+     */
+    private void shuffleByName(){
+        PPod p_temp = new PPod();
+        int first=0;
+        
+        for(int j=0;j<this.Size();j++){
+            for(int i=0;i<this.Size();i++){
+                    if(this.files[first].getName().charAt(0)>=this.files[i].getName().charAt(0)){
+                        first=i;
+                    }
+            }
+            p_temp.addFile(this.files[first]);
+            this.deleteFile(first+1);   
+            first=0;
+        }
+        this.files=p_temp.files;
+    }
+    
+    /**
+     * Shuffle the tracks by size of files
+     */
+    public void shuffleBySize(){
+        PPod p_temp = new PPod();
+        int first=0;
+        int t=this.Size();
+        
+        for(int j=0;j<t;j++){
+            for(int i=0;i<this.Size();i++){
+                    if(this.files[first].getSize()<this.files[i].getSize()){
+                        first=i;
+                        
+                    }
+            }
+            p_temp.addFile(this.files[first]);
+            this.deleteFile(first+1);
+            first=0;
+        }
+        this.files=p_temp.files;        
+    }
     
     
     /**
@@ -196,6 +267,12 @@ public class PPod implements PPodContract{
     public void setFiles(File[] files) {
         this.files = files;
     }
-    
-    
+
+    /**
+     * @return the capacity
+     */
+    public double getCapacity() {
+        return capacity;
+    }
+
 }

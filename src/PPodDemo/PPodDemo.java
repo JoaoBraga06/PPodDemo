@@ -23,15 +23,13 @@ public class PPodDemo {
         File f3 = new File("Diogo", Extensions.mov, 2000, 2);
         PPod p = new PPod();
                 
-        p.addFile(f);
         p.addFile(f1);
+        p.addFile(f);
         p.addFile(f2);
-        p.addFile(f3);
-        p.playTrack(2);
+        p.shufflePlay(TypesOfOrdenation.SIZE);
         p.playTrack(1);
-        p.nextTrack();
-        p.previousTrack();
- 
+        p.playTrack(2);
+        p.playTrack(3);
     }
     
 }

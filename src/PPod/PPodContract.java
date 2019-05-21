@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package PPod;
+import Enums.TypesOfOrdenation;
 
 /**
  *
@@ -43,4 +44,11 @@ public interface PPodContract {
      * Plays the previous track
      */
     public void previousTrack();
+    
+    /**
+     * Shuffle plays the tracks
+     * 
+     * @param type Type of the shuffle plat
+     */
+    public void shufflePlay(TypesOfOrdenation type);
 }
