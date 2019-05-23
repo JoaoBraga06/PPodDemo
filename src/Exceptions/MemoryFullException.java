@@ -11,11 +11,31 @@ package Exceptions;
  */
 public class MemoryFullException extends Exception {
     /**
-     * Constructs an instance of <code>MemoryFullException</code> with the
+     * Sentence
+     */
+    private static String sentence;
+    
+    /**
+     * Constructs an instance of <code>ExtensionException</code> with the
      * specified detail message.
      *
      */
     public MemoryFullException() {
-        System.out.println("Memory is full.");
+        MemoryFullException.sentence="Memory is full";
+        System.out.println(MemoryFullException.sentence);
+    }
+
+    /**
+     * @return the sentence
+     */
+    public static String getSentence() {
+        return sentence;
+    }
+
+    /**
+     * @param aSentence the sentence to set
+     */
+    public static void setSentence(String aSentence) {
+        sentence = aSentence;
     }
 }

@@ -11,7 +11,7 @@ import Exceptions.*;
  *
  * @author joaop
  */
-public class PPod implements PPodContract{
+public class PPod extends ExceptionFile implements PPodContract{
     /**
      * Max files
      */
@@ -52,8 +52,10 @@ public class PPod implements PPodContract{
      * 
      */
     public PPod(){
-         this.files = new File[MAX_FILES];
-         this.capacity=0;
+        super();
+        this.files = new File[MAX_FILES];
+        this.capacity=0;
+        this.type=TypesOfOrdenation.DEFAULT;
     }   
     
     
@@ -70,12 +72,12 @@ public class PPod implements PPodContract{
             if(file.getLenght()<=0)
                 throw new TrackLenghtInvalidException();
         } catch(FileNullException | MemoryFullException | MaxFilesException | TrackLenghtInvalidException e){
-            this.capacity+=file.getSize();
+            super.add_exception();
             IsAdded=false;
         }
         if(IsAdded){
             this.files[this.Size()]=file;
-            System.out.println("File added."+'\n');
+            //System.out.println("File added."+'\n');
             this.capacity+=file.getSize();
         }
         return IsAdded;
@@ -97,7 +99,7 @@ public class PPod implements PPodContract{
                 this.files[i]=this.files[i+1];
             }
             this.files[this.Size()-1]=null;
-            System.out.println("File deleted."+'\n');
+            //System.out.println("File deleted."+'\n');
         }
         return IsDeleted;
     }
@@ -173,7 +175,11 @@ public class PPod implements PPodContract{
         this.type=type;
         switch(this.type){
             case NAME: this.shuffleByName();
+            break;
             case SIZE: this.shuffleBySize();
+            break;
+            case LENGHT: this.shuffleByLenght();
+            break;
         }
     }
     
@@ -184,9 +190,9 @@ public class PPod implements PPodContract{
         PPod p_temp = new PPod();
         int first=0;
         
-        for(int j=0;j<this.Size();j++){
+        for(int j=this.Size();j>0;j--){
             for(int i=0;i<this.Size();i++){
-                    if(this.files[first].getName().charAt(0)>=this.files[i].getName().charAt(0)){
+                    if(this.files[first].getName().charAt(0)>this.files[i].getName().charAt(0)){
                         first=i;
                     }
             }
@@ -195,19 +201,19 @@ public class PPod implements PPodContract{
             first=0;
         }
         this.files=p_temp.files;
+        this.type=TypesOfOrdenation.NAME;
     }
     
     /**
      * Shuffle the tracks by size of files
      */
-    public void shuffleBySize(){
+    private void shuffleBySize(){
         PPod p_temp = new PPod();
         int first=0;
-        int t=this.Size();
         
-        for(int j=0;j<t;j++){
+        for(int j=this.Size();j>0;j--){
             for(int i=0;i<this.Size();i++){
-                    if(this.files[first].getSize()<this.files[i].getSize()){
+                    if(this.files[first].getSize()<=this.files[i].getSize()){
                         first=i;
                         
                     }
@@ -216,9 +222,41 @@ public class PPod implements PPodContract{
             this.deleteFile(first+1);
             first=0;
         }
-        this.files=p_temp.files;        
+        this.files=p_temp.files;  
+        this.type=TypesOfOrdenation.SIZE;
     }
     
+    /**
+     * Shuffle the tracks by lenght of files
+     */
+    private void shuffleByLenght(){
+        PPod p_temp = new PPod();
+        int first=0;
+        
+        for(int j=this.Size();j>0;j--){
+            for(int i=0;i<this.Size();i++){
+                    if(this.files[first].getLenght()>this.files[i].getLenght()){
+                        first=i;
+                        
+                    }
+            }
+            p_temp.addFile(this.files[first]);
+            this.deleteFile(first+1);
+            first=0;
+        }
+        this.files=p_temp.files;  
+        this.type=TypesOfOrdenation.LENGHT;
+    }
+    
+    /**
+     * Plays all the valid tracks in the PPod
+     */
+    public void playAll(){
+        System.out.println("-------- "+"Shuffle type: "+this.type.TypeToString(type)+" --------"+'\n');
+        for(int i=0;i<this.Size();i++){
+            this.playTrack(i+1);
+        }
+    }
     
     /**
      * Size ocuppied in the File array
@@ -232,7 +270,8 @@ public class PPod implements PPodContract{
         }
         return i;
     }
-    
+
+   
     /**
      * @return the MAX_FILES
      */

@@ -9,13 +9,33 @@ package Exceptions;
  *
  * @author joaop
  */
-public class FileNullException extends Exception {
+public class FileNullException extends Exception {    
     /**
-     * Constructs an instance of <code>FileNullException</code> with the
+     * Sentence
+     */
+    private static String sentence;
+    
+    /**
+     * Constructs an instance of <code>ExtensionException</code> with the
      * specified detail message.
      *
      */
     public FileNullException() {
-        System.out.println("File is null.");
+        FileNullException.sentence="File is null.";
+        System.out.println(FileNullException.sentence);
+    }
+
+    /**
+     * @return the sentence
+     */
+    public static String getSentence() {
+        return sentence;
+    }
+
+    /**
+     * @param aSentence the sentence to set
+     */
+    public static void setSentence(String aSentence) {
+        sentence = aSentence;
     }
 }

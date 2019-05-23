@@ -11,11 +11,31 @@ package Exceptions;
  */
 public class MaxFilesException extends Exception {
     /**
-     * Constructs an instance of <code>MaxFilesException</code> with the
+     * Sentence
+     */
+    private static String sentence;
+    
+    /**
+     * Constructs an instance of <code>ExtensionException</code> with the
      * specified detail message.
      *
      */
     public MaxFilesException() {
-        System.out.println("Numbers of files exceded.");
+        MaxFilesException.sentence="Number of files exceded";
+        System.out.println(MaxFilesException.sentence);
+    }
+
+    /**
+     * @return the sentence
+     */
+    public static String getSentence() {
+        return sentence;
+    }
+
+    /**
+     * @param aSentence the sentence to set
+     */
+    public static void setSentence(String aSentence) {
+        sentence = aSentence;
     }
 }

@@ -11,11 +11,31 @@ package Exceptions;
  */
 public class TrackLenghtInvalidException extends Exception {
     /**
-     * Constructs an instance of <code>TrackLenghtInvalidException</code> with
-     * the specified detail message.
+     * Sentence
+     */
+    private static String sentence;
+    
+    /**
+     * Constructs an instance of <code>ExtensionException</code> with the
+     * specified detail message.
      *
      */
     public TrackLenghtInvalidException() {
-        System.out.println("Lenght of track invalid."+'\n');
+        TrackLenghtInvalidException.sentence="Invalid lenght.";
+        System.out.println(TrackLenghtInvalidException.sentence);
+    }
+
+    /**
+     * @return the sentence
+     */
+    public static String getSentence() {
+        return sentence;
+    }
+
+    /**
+     * @param aSentence the sentence to set
+     */
+    public static void setSentence(String aSentence) {
+        sentence = aSentence;
     }
 }

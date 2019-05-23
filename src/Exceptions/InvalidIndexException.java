@@ -11,10 +11,31 @@ package Exceptions;
  */
 public class InvalidIndexException extends Exception{
     /**
-     * 
+     * Sentence
+     */
+    private static String sentence;
+    
+    /**
+     * Constructs an instance of <code>ExtensionException</code> with the
+     * specified detail message.
+     *
      */
     public InvalidIndexException() {
-        System.out.println("Invalid index.");
+        InvalidIndexException.sentence="Invalid Index.";
+        System.out.println(InvalidIndexException.sentence);
     }
-    
+
+    /**
+     * @return the sentence
+     */
+    public static String getSentence() {
+        return sentence;
+    }
+
+    /**
+     * @param aSentence the sentence to set
+     */
+    public static void setSentence(String aSentence) {
+        sentence = aSentence;
+    }
 }

@@ -10,12 +10,33 @@ package Exceptions;
  * @author joaop
  */
 public class NextTrackInvalidException extends Exception {
+        /**
+     * Sentence
+     */
+    private static String sentence;
+    
     /**
-     * Constructs an instance of <code>NextTrackInvalidException</code> with the
+     * Constructs an instance of <code>ExtensionException</code> with the
      * specified detail message.
      *
      */
     public NextTrackInvalidException() {
-        System.out.println("The track is invalid."+'n'+"Skipping to the next one.");
+        NextTrackInvalidException.sentence="\"The track is invalid.\"+'n'+\"Skipping to the next one.";
+        System.out.println(NextTrackInvalidException.sentence);
     }
+
+    /**
+     * @return the sentence
+     */
+    public static String getSentence() {
+        return sentence;
+    }
+
+    /**
+     * @param aSentence the sentence to set
+     */
+    public static void setSentence(String aSentence) {
+        sentence = aSentence;
+    }
+    
 }

@@ -11,11 +11,31 @@ package Exceptions;
  */
 public class ExtensionException extends Exception {
     /**
+     * Sentence
+     */
+    private static String sentence="Extension not supported.";
+    
+    /**
      * Constructs an instance of <code>ExtensionException</code> with the
      * specified detail message.
      *
      */
     public ExtensionException() {
-        System.out.println("Extension not supported.");
+        ExtensionException.sentence="Extension not supported.";
+        System.out.println(ExtensionException.sentence);
+    }
+
+    /**
+     * @return the sentence
+     */
+    public static String getSentence() {
+        return sentence;
+    }
+
+    /**
+     * @param aSentence the sentence to set
+     */
+    public static void setSentence(String aSentence) {
+        sentence = aSentence;
     }
 }
