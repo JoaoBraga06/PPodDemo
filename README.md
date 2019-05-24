@@ -5,7 +5,7 @@
 
 ## Descrição
 
-Projeto criado com base num leitor de músicas. É possivel adicionar e remover músicas ao leitor. O leitor tem a funcionalidade de shuffle, dar play tanto na próxima música na lista como na anterior. 
+Projeto criado com base num leitor de músicas. É possivel adicionar e remover músicas ao leitor. O leitor tem a funcionalidade de shuffle e play de tracks. Existem restrições relativamente à capacidade do leitor e ao tipo de ficheiros que este pode reproduzir
 
 ## Finalidade
 
