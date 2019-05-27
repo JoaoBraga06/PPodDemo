@@ -1,14 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package PPod;
 import Enums.Extensions;
 
 /**
- *
- * @author joaop
+ * <h3>
+ * ESTG - Escola Superior de Tecnologia e Gestão<br>
+ * IPP - Instituto Politécnico do Porto <br>
+ * LEI - Licenciatura em Engenharia Informática<br>
+ * PP - Paradigmas de Programação<br>
+ * </h3>
+ * <p>
+ * <strong>Descrição: </strong><br>
+ * Class that represents one File that can be added to one PPod
+ * </p>
  */
 public class File {
     /**
@@ -100,7 +103,5 @@ public class File {
      */
     public void setLenght(int lenght) {
         this.lenght = lenght;
-    }
-    
-    
+    } 
 }

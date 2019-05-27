@@ -1,17 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package PPod;
 import Enums.*;
 import Exceptions.*;
 
 /**
- *
- * @author joaop
+ * <h3>
+ * ESTG - Escola Superior de Tecnologia e Gestão<br>
+ * IPP - Instituto Politécnico do Porto <br>
+ * LEI - Licenciatura em Engenharia Informática<br>
+ * PP - Paradigmas de Programação<br>
+ * </h3>
+ * <p>
+ * <strong>Descrição: </strong><br>
+ * Class that represents one PPod that can contain various files
+ * </p>
  */
-public class PPod extends ExceptionFile implements PPodContract{
+public class PPod implements PPodContract{
     /**
      * Max files
      */
@@ -48,11 +51,23 @@ public class PPod extends ExceptionFile implements PPodContract{
     private TypesOfOrdenation type;
     
     /**
+     * Number of exceptions
+     */
+    private int n_exceptions;
+    
+    /**
+     * Exception File
+     */
+    private final ExceptionFile exceptionFile;
+        
+    /**
      * Creates a PPod
      * 
+     * @param e The exception file that is associated with the PPod
      */
-    public PPod(){
-        super();
+    public PPod(ExceptionFile e){
+        this.exceptionFile=e;
+        this.exceptionFile.addPPod(this);
         this.files = new File[MAX_FILES];
         this.capacity=0;
         this.type=TypesOfOrdenation.DEFAULT;
@@ -72,12 +87,12 @@ public class PPod extends ExceptionFile implements PPodContract{
             if(file.getLenght()<=0)
                 throw new TrackLenghtInvalidException();
         } catch(FileNullException | MemoryFullException | MaxFilesException | TrackLenghtInvalidException e){
-            super.add_exception();
+            n_exceptions++;
+            this.exceptionFile.addException();
             IsAdded=false;
         }
         if(IsAdded){
             this.files[this.Size()]=file;
-            //System.out.println("File added."+'\n');
             this.capacity+=file.getSize();
         }
         return IsAdded;
@@ -92,6 +107,8 @@ public class PPod extends ExceptionFile implements PPodContract{
             
         } catch(InvalidIndexException e){
             IsDeleted=false;
+            n_exceptions++;
+            this.exceptionFile.addException();
         }
         if(IsDeleted){
             this.capacity-=this.files[index-1].getSize();
@@ -99,7 +116,6 @@ public class PPod extends ExceptionFile implements PPodContract{
                 this.files[i]=this.files[i+1];
             }
             this.files[this.Size()-1]=null;
-            //System.out.println("File deleted."+'\n');
         }
         return IsDeleted;
     }
@@ -116,6 +132,8 @@ public class PPod extends ExceptionFile implements PPodContract{
                 throw new TrackLenghtInvalidException();
         } catch(InvalidIndexException | ExtensionException | TrackLenghtInvalidException e){
             IsPlaying=false;
+            n_exceptions++;
+            this.exceptionFile.addException();
         }
         if(IsPlaying){
             this.index=index-1;
@@ -139,6 +157,8 @@ public class PPod extends ExceptionFile implements PPodContract{
                 }
             } catch(NextTrackInvalidException e){
                 IsPlaying=false;
+                this.exceptionFile.addException();
+                this.n_exceptions++;
             }
         }while(!IsPlaying);
 
@@ -161,6 +181,8 @@ public class PPod extends ExceptionFile implements PPodContract{
                 }
             } catch(NextTrackInvalidException e){
                 IsPlaying=false;
+                this.exceptionFile.addException();
+                this.n_exceptions++;                
             }
         }while(!IsPlaying);
 
@@ -187,14 +209,25 @@ public class PPod extends ExceptionFile implements PPodContract{
      * Shuffle the tracks by name
      */
     private void shuffleByName(){
-        PPod p_temp = new PPod();
+        PPod p_temp = new PPod(this.exceptionFile);
         int first=0;
+        int t=0;
+        int menor;
         
         for(int j=this.Size();j>0;j--){
-            for(int i=0;i<this.Size();i++){
-                    if(this.files[first].getName().charAt(0)>this.files[i].getName().charAt(0)){
-                        first=i;
-                    }
+            for(int i=1;i<this.Size();i++){
+                if(this.files[first].getName().length()<this.files[i].getName().length()){
+                    menor=this.files[first].getName().length();
+                }
+                else{
+                    menor=this.files[i].getName().length();
+                }
+                while(t<menor-1 && this.files[first].getName().charAt(t)==this.files[i].getName().charAt(t)){
+                    t++;
+                }
+                if(this.files[first].getName().charAt(t)>this.files[i].getName().charAt(t)){
+                    first=i;
+                }
             }
             p_temp.addFile(this.files[first]);
             this.deleteFile(first+1);   
@@ -208,7 +241,7 @@ public class PPod extends ExceptionFile implements PPodContract{
      * Shuffle the tracks by size of files
      */
     private void shuffleBySize(){
-        PPod p_temp = new PPod();
+        PPod p_temp = new PPod(this.exceptionFile);
         int first=0;
         
         for(int j=this.Size();j>0;j--){
@@ -230,7 +263,7 @@ public class PPod extends ExceptionFile implements PPodContract{
      * Shuffle the tracks by lenght of files
      */
     private void shuffleByLenght(){
-        PPod p_temp = new PPod();
+        PPod p_temp = new PPod(this.exceptionFile);
         int first=0;
         
         for(int j=this.Size();j>0;j--){
@@ -259,7 +292,7 @@ public class PPod extends ExceptionFile implements PPodContract{
     }
     
     /**
-     * Size ocuppied in the File array
+     * Calculates the size ocuppied in the File array
      * 
      * @return Size ocuppied in the File array
      */
@@ -313,5 +346,4 @@ public class PPod extends ExceptionFile implements PPodContract{
     public double getCapacity() {
         return capacity;
     }
-
 }

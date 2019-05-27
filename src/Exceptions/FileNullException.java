@@ -6,8 +6,16 @@
 package Exceptions;
 
 /**
- *
- * @author joaop
+ * <h3>
+ * ESTG - Escola Superior de Tecnologia e Gestão<br>
+ * IPP - Instituto Politécnico do Porto <br>
+ * LEI - Licenciatura em Engenharia Informática<br>
+ * PP - Paradigmas de Programação<br>
+ * </h3>
+ * <p>
+ * <strong>Descrição: </strong><br>
+ * Class that represents the File Null Exception
+ * </p>
  */
 public class FileNullException extends Exception {    
     /**
