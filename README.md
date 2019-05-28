@@ -1,7 +1,7 @@
 # PPod
 
 ## Autor
-*Projeto criado por João Brito, 8180170, Escola Secundária de Tecnologia e Gestão - IPP*
+*Projeto criado por João Brito, 8180170, Escola Superior de Tecnologia e Gestão - IPP*
 
 ## Descrição
 
@@ -11,4 +11,4 @@ Projeto criado com base num leitor de músicas. É possivel adicionar e remover 
 
 Este projeto destina-se à realização do Exercício 1 e 2, da ficha 2019.PP.FP11
 
-###### Versão 1.2
+###### Versão 1.3
