@@ -9,6 +9,6 @@ Projeto criado com base num leitor de músicas. É possivel adicionar e remover 
 
 ## Finalidade
 
-Este projeto destina-se à realização do Exercício 1 e 2, da ficha 2019.PP.FP11
+Este projeto destina-se à realização do Exercício 1 e 2, da ficha 2019.PP.FP11 e do Exercício 1 da ficha 2019.PP.FP12
 
 ###### Versão 1.3
